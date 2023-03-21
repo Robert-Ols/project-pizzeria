@@ -63,8 +63,7 @@
       thisProduct.getElements();  
       thisProduct.initAccordion();
       thisProduct.initOrderForm();  
-      thisProduct.processOrder(); 
-
+      thisProduct.processOrder();
       //console.log('new Product:', thisProduct);
     }
 
@@ -80,18 +79,19 @@
       menuContainer.appendChild(thisProduct.element);
     }
 
-    getElements(){
+    getElements() {
       const thisProduct = this;    
       thisProduct.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
       thisProduct.form = thisProduct.element.querySelector(select.menuProduct.form);
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
     }
 
     initAccordion() {
       const thisProduct = this;
-      // accordionTrigger.addEventListener('click', function(event){  // <- zmienione do przeliczania
+      /* clickable trigger on the event accordionTrigger */
       thisProduct.accordionTrigger.addEventListener('click', function(event){
         /* prevent default action for event */
         event.preventDefault();
@@ -106,7 +106,7 @@
       });
     }
 
-    initOrderForm(){
+    initOrderForm() {
       const thisProduct = this;
       thisProduct.form.addEventListener('submit', function(event){
         event.preventDefault();
@@ -152,6 +152,15 @@
               price -= option.price;
             }
           }
+          const optionImage = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
+          if(optionImage){
+            if(formData[paramId] && formData[paramId].includes(optionId)){
+              optionImage.classList.add(classNames.menuProduct.imageVisible);
+            }
+            else {
+              optionImage.classList.remove(classNames.menuProduct.imageVisible);   
+            }
+          }   
         }        
         // update calculated price in the HTML
         thisProduct.priceElem.innerHTML = price;
